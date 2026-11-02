@@ -1,12 +1,19 @@
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
+import CheckoutSuccess from "./pages/CheckoutSuccess";
+import Contact from "./pages/Contact";
+
 function App() {
   return (
-    <main className="min-h-screen bg-cream p-8">
-      <h1 className="text-4xl font-bold text-berry">Welcome to Allsorts!</h1>
-
-      <p className="mt-4 text-lg text-dark">
-        A little bit of everything, all in one place.
-      </p>
-    </main>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/product/:id" element={<ProductDetails />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/checkout-success" element={<CheckoutSuccess />} />
+      <Route path="/contact" element={<Contact />} />
+    </Routes>
   );
 }
 
