@@ -5,11 +5,12 @@ import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import Contact from "./pages/Contact";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <>
-    <Header ></Header>
+      <Header></Header>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetails />} />
@@ -17,6 +18,7 @@ function App() {
         <Route path="/checkout-success" element={<CheckoutSuccess />} />
         <Route path="/contact" element={<Contact />} />
       </Routes>
+      <Footer></Footer>
     </>
   );
 }
