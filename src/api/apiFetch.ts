@@ -1,8 +1,6 @@
-const API_URL = "https://v2.api.noroff.dev/online-shop";
-
-export async function getProducts() {
+export async function fetchData(url: string) {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error(
@@ -14,7 +12,7 @@ export async function getProducts() {
 
     return result.data;
   } catch (error) {
-    console.error("Failed to fetch products:", error);
+    console.error("Fetch error:", error);
     throw error;
   }
 }

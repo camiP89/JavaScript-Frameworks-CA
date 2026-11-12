@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import ProductGrid from "../components/ProductGrid";
-import { getProducts } from "../api/getProducts";
+import { fetchAllProducts } from "../api/productsApi";
 import type { Product } from "../types/Product";
 
 function Home() {
@@ -12,7 +12,7 @@ function Home() {
   useEffect(() => {
     async function fetchProducts() {
       try {
-        const data = await getProducts();
+        const data = await fetchAllProducts();
         setProducts(data);
       } catch (error) {
         if (error instanceof Error) {
