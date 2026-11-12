@@ -13,6 +13,6 @@ export type Product = {
   discountedPrice: number;
   image: { url: string; alt: string };
   rating: number;
-  tags: string;
+  tags: string[];
   reviews: Review[];
 };

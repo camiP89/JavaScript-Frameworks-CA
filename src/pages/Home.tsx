@@ -1,7 +1,33 @@
+import { useState, useEffect } from "react";
 import Hero from "../components/Hero";
 import ProductGrid from "../components/ProductGrid";
+import { getProducts } from "../api/getProducts";
+import type { Product } from "../types/Product";
 
 function Home() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        } else {
+          setError("Something went wrong");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchProducts();
+  }, []);
+
   return (
     <main className="min-h-screen bg-cream p-4">
       <Hero />
@@ -10,7 +36,13 @@ function Home() {
         Welcome to Allsorts!
       </h1>
 
-      <ProductGrid products={[]} />
+      {isLoading ? (
+        <p>Loading products...</p>
+      ) : error ? (
+        <p>Could not load products: {error}</p>
+      ) : (
+        <ProductGrid products={products} />
+      )}
     </main>
   );
 }
