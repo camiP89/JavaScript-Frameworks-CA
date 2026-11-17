@@ -4,8 +4,23 @@ import { Link } from "react-router-dom";
 type ProductCardProps = { product: Product };
 
 function ProductCard({ product }: ProductCardProps) {
+  const hasDiscount =
+    product.price > 0 && product.discountedPrice < product.price;
+
+  const discountPercentage = hasDiscount
+    ? Math.round(
+        ((product.price - product.discountedPrice) / product.price) * 100,
+      )
+    : 0;
+
   return (
     <article className="group relative overflow-hidden rounded-lg shadow-lg flex flex-col h-full bg-neutral-soft border border-caramel">
+      {hasDiscount && (
+        <span className="absolute top-3 right-3 z-10 rounded-lg bg-amber px-2 py-1 text-xs font-semibold text-dark">
+          {discountPercentage}% OFF
+        </span>
+      )}
+
       <div className="aspect-square w-full overflow-hidden">
         <img
           src={product.image.url}
@@ -14,7 +29,7 @@ function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-1">
         <h3>{product.title}</h3>
 
         <p className="text-amber">⭐{product.rating} / 5</p>
@@ -23,7 +38,7 @@ function ProductCard({ product }: ProductCardProps) {
 
         <Link
           to={`/productDetails/${product.id}`}
-          className="mt-4 block rounded-lg bg-berry px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-caramel"
+          className="mt-auto block rounded-lg bg-berry px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-caramel"
         >
           View Details
         </Link>
