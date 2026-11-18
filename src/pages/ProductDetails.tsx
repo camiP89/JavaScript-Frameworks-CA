@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchSingleProductById } from "../api/productsApi";
 import type { Product } from "../types/Product";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function ProductDetails() {
   const [product, setProduct] = useState<Product | null>(null);
@@ -64,21 +64,23 @@ function ProductDetails() {
             {product.description}
           </p>
 
-          <p className="text-xl font-medium mb-2">
-            £{product.discountedPrice.toFixed(2)}
-          </p>
-
-          {product.price > product.discountedPrice && (
-            <p className="text-sm text-gray-500 line-through">
-              £{product.price.toFixed(2)}
+          <div className="flex items-center gap-3 mb-4">
+            <p className="text-xl font-medium">
+              £{product.discountedPrice.toFixed(2)}
             </p>
-          )}
+
+            {product.price > product.discountedPrice && (
+              <p className="text-sm text-gray-500 line-through">
+                £{product.price.toFixed(2)}
+              </p>
+            )}
+          </div>
 
           <p className="text-sm font-light text-caramel mb-4">
             {product.tags.join(", ")}
           </p>
 
-          <div className="border-2 border-caramel rounded-lg p-3">
+          <div className="border-2 border-caramel rounded-lg p-3 mb-4">
             <h3 className="text-xl font-bold text-berry mb-2">Reviews</h3>
 
             {product.reviews.length > 0 ? (
@@ -100,6 +102,9 @@ function ProductDetails() {
       ) : (
         <p>Product not found.</p>
       )}
+      <Link to="/" className="text-berry hover:underline">
+        ← Back to Shop
+      </Link>
     </main>
   );
 }

@@ -34,7 +34,17 @@ function ProductCard({ product }: ProductCardProps) {
 
         <p className="text-amber">⭐{product.rating} / 5</p>
 
-        <p>£{product.discountedPrice.toFixed(2)}</p>
+        <div className="flex items-center gap-2 mb-4">
+          <p className="text-base font-medium md:text-lg lg:text-xl">
+            £{product.discountedPrice.toFixed(2)}
+          </p>
+
+          {hasDiscount && (
+            <p className="text-xs md:text-base lg:text-lg text-berry line-through">
+              £{product.price.toFixed(2)}
+            </p>
+          )}
+        </div>
 
         <Link
           to={`/productDetails/${product.id}`}
