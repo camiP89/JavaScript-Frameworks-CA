@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { fetchSingleProductById } from "../api/productsApi";
 import type { Product } from "../types/Product";
 import { Link, useParams } from "react-router-dom";
+import AddToCartButton from "../components/AddToCartButton";
 
 function ProductDetails() {
   const [product, setProduct] = useState<Product | null>(null);
@@ -75,6 +76,8 @@ function ProductDetails() {
               </p>
             )}
           </div>
+
+          <AddToCartButton product={product} />
 
           <p className="text-sm font-light text-caramel mb-4">
             {product.tags.join(", ")}
