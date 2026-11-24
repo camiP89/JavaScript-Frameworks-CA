@@ -29,8 +29,34 @@ export function CartProvider({ children }: CartProviderProps) {
     });
   };
 
+  const minusFromCart = (product: Product) => {
+    setCartItems((previousItems) => {
+      const existingItem = previousItems.find(
+        (item) => item.product.id === product.id,
+      );
+
+      if (existingItem) {
+        return previousItems.map((item) =>
+          item.product.id === product.id && item.quantity > 1
+            ? { ...item, quantity: item.quantity - 1 }
+            : item,
+        );
+      }
+
+      return previousItems;
+    });
+  };
+
+  const deleteFromCart = (product: Product) => {
+    setCartItems((previousItems) => {
+      return previousItems.filter((item) => item.product.id !== product.id);
+    });
+  };
+
   return (
-    <CartContext.Provider value={{ cartItems, addToCart }}>
+    <CartContext.Provider
+      value={{ cartItems, addToCart, minusFromCart, deleteFromCart }}
+    >
       {children}
     </CartContext.Provider>
   );
