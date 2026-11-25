@@ -1,11 +1,22 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
+import { useState, useEffect } from "react";
+import ToastMessage from "../components/Toast";
 
 function Cart() {
   const { cartItems, addToCart, minusFromCart, deleteFromCart } = useCart();
   const navigate = useNavigate();
-
   const postage = 5.0;
+  const [showToast, setShowToast] = useState(false);
+  useEffect(() => {
+    if (!showToast) return;
+
+    const timer = setTimeout(() => {
+      setShowToast(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [showToast]);
 
   const cartSubtotal = cartItems.reduce(
     (total, item) => total + item.product.discountedPrice * item.quantity,
@@ -21,7 +32,10 @@ function Cart() {
       {cartItems.length === 0 && <p>Your cart is empty.</p>}
 
       {cartItems.map((item) => (
-        <div className="flex flex-row gap-4" key={item.product.id}>
+        <div
+          className="flex flex-row gap-4 mb-2 border-b-2 pb-2 border-neutral-soft"
+          key={item.product.id}
+        >
           <img
             src={item.product.image.url}
             alt={item.product.image.alt}
@@ -29,10 +43,12 @@ function Cart() {
           />
 
           <div>
-            <p>{item.product.title}</p>
+            <p className="font-semibold text-base text-dark">
+              {item.product.title}
+            </p>
 
             <div className="flex items-center gap-3">
-              <p>Quantity: {item.quantity}</p>
+              <p className="text-sm">Quantity: {item.quantity}</p>
 
               <button
                 type="button"
@@ -52,7 +68,10 @@ function Cart() {
 
               <button
                 type="button"
-                onClick={() => deleteFromCart(item.product)}
+                onClick={() => {
+                  deleteFromCart(item.product);
+                  setShowToast(true);
+                }}
                 className="text-berry hover:underline"
               >
                 Remove
@@ -64,11 +83,25 @@ function Cart() {
         </div>
       ))}
 
-      <div>
-        <p>Cart Subtotal: £{cartSubtotal.toFixed(2)}</p>
-        <p>Postage: £5.00</p>
+      {showToast && (
+        <ToastMessage message="Item removed from cart!" type="success" />
+      )}
 
-        <p>Total: £{cartTotal.toFixed(2)}</p>
+      <div className="mt-8 space-y-2 bg-neutral-soft/50 py-3 px-3 rounded-xl">
+        <div className="flex justify-between">
+          <span>Cart Subtotal:</span>
+          <span>£{cartSubtotal.toFixed(2)}</span>
+        </div>
+
+        <div className="flex justify-between">
+          <span>Postage:</span>
+          <span>£{(cartItems.length > 0 ? postage : 0).toFixed(2)}</span>
+        </div>
+        
+        <div className="flex justify-between font-bold">
+          <span>Total:</span>
+          <span>£{cartTotal.toFixed(2)}</span>
+        </div>
 
         <button
           type="button"
@@ -80,7 +113,7 @@ function Cart() {
         </button>
       </div>
 
-      <Link to="/" className="text-berry hover:underline mt-3">
+      <Link to="/" className="inline-block mt-3 text-berry hover:underline">
         ← Back to Shop
       </Link>
     </main>
