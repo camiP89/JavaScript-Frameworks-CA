@@ -7,6 +7,7 @@ export type CartContextType = {
   addToCart: (product: Product) => void;
   minusFromCart: (product: Product) => void;
   deleteFromCart: (product: Product) => void;
+  clearCart: () => void;
 };
 
 export const CartContext = createContext<CartContextType | undefined>(

@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import ToastMessage from "../components/Toast";
 
 function Cart() {
-  const { cartItems, addToCart, minusFromCart, deleteFromCart } = useCart();
+  const { cartItems, addToCart, minusFromCart, deleteFromCart, clearCart } =
+    useCart();
   const navigate = useNavigate();
   const postage = 5.0;
   const [showToast, setShowToast] = useState(false);
@@ -97,7 +98,7 @@ function Cart() {
           <span>Postage:</span>
           <span>£{(cartItems.length > 0 ? postage : 0).toFixed(2)}</span>
         </div>
-        
+
         <div className="flex justify-between font-bold">
           <span>Total:</span>
           <span>£{cartTotal.toFixed(2)}</span>
@@ -105,7 +106,10 @@ function Cart() {
 
         <button
           type="button"
-          onClick={() => navigate("/checkout-success")}
+          onClick={() => {
+            clearCart();
+            navigate("/checkout-success");
+          }}
           disabled={cartItems.length === 0}
           className="rounded-lg bg-berry px-6 py-3 font-semibold text-white hover:bg-caramel disabled:opacity-50"
         >
