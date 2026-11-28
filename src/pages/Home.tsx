@@ -37,70 +37,76 @@ function Home() {
   const sortedProducts = sortProducts(filteredProducts, sortType);
 
   return (
-    <main className="min-h-screen bg-cream p-4">
-      <Hero />
-
-      <h1 className="pt-4 text-4xl font-bold text-berry">
-        Welcome to Allsorts!
-      </h1>
-
-      <div className="my-4">
-        <label htmlFor="sort" className="mr-2 text-dark">
-          Sort by:
-        </label>
-
-        <select
-          id="sort"
-          value={sortType}
-          onChange={(event) => setSortType(event.target.value)}
-          className="rounded-lg border border-caramel bg-white p-2"
-        >
-          <option value="default">Default</option>
-          <option value="priceLow">Price: Low to High</option>
-          <option value="priceHigh">Price: High to Low</option>
-        </select>
+    <main className="min-h-screen bg-cream">
+      <div className="flex w-full justify-center px-4 pt-4">
+        <Hero />
       </div>
 
-      <div className="my-4">
-        <label htmlFor="search-input" className="mr-2 text-dark">
-          Search:
-        </label>
+      <div className="mx-auto w-full max-w-6xl px-4 pb-4">
+        <h1 className="mb-6 text-2xl font-bold text-berry">All products</h1>
+        <div className="flex flex-col gap-4 md:flex-row md:items-start">
+          <div className="w-full md:w-64">
+            <label htmlFor="sort" className="mb-2 block font-medium text-dark">
+              Sort by:
+            </label>
 
-        <input
-          type="text"
-          id="search-input"
-          value={searchInput}
-          onChange={(event) => setSearchInput(event.target.value)}
-          placeholder="Search products..."
-          className="w-full rounded-lg border border-caramel bg-white p-2"
-        />
+            <select
+              id="sort"
+              value={sortType}
+              onChange={(event) => setSortType(event.target.value)}
+              className="w-full rounded-lg border border-caramel bg-white px-3 py-3"
+            >
+              <option value="default">Default</option>
+              <option value="priceLow">Price: Low to High</option>
+              <option value="priceHigh">Price: High to Low</option>
+            </select>
+          </div>
 
-        {searchInput.trim() !== "" && !isLoading && !error && (
-          <div className="mt-2 rounded-lg border border-caramel bg-white">
-            {filteredProducts.length > 0 ? (
-              filteredProducts.slice(0, 5).map((product) => (
-                <Link
-                  key={product.id}
-                  to={`/productDetails/${product.id}`}
-                  className="block p-3 text-dark hover:bg-neutral-soft"
-                >
-                  {product.title}
-                </Link>
-              ))
-            ) : (
-              <p className="p-3 text-dark">No matching products found.</p>
+          <div className="w-full md:flex-1">
+            <label
+              htmlFor="search-input"
+              className="mb-2 block font-medium text-dark"
+            >
+              Search:
+            </label>
+
+            <input
+              type="text"
+              id="search-input"
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.target.value)}
+              placeholder="Search products..."
+              className="w-full rounded-lg border border-caramel bg-white px-3 py-3"
+            />
+
+            {searchInput.trim() !== "" && !isLoading && !error && (
+              <div className="mt-2 rounded-lg border border-caramel bg-white">
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.slice(0, 5).map((product) => (
+                    <Link
+                      key={product.id}
+                      to={`/productDetails/${product.id}`}
+                      className="block p-3 text-dark hover:bg-neutral-soft"
+                    >
+                      {product.title}
+                    </Link>
+                  ))
+                ) : (
+                  <p className="p-3 text-dark">No matching products found.</p>
+                )}
+              </div>
             )}
           </div>
+        </div>
+
+        {isLoading ? (
+          <p>Loading products...</p>
+        ) : error ? (
+          <p>Could not load products: {error}</p>
+        ) : (
+          <ProductGrid products={sortedProducts} />
         )}
       </div>
-
-      {isLoading ? (
-        <p>Loading products...</p>
-      ) : error ? (
-        <p>Could not load products: {error}</p>
-      ) : (
-        <ProductGrid products={sortedProducts} />
-      )}
     </main>
   );
 }

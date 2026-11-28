@@ -40,74 +40,79 @@ function ProductDetails() {
   }, [id]);
 
   return (
-    <main className="min-h-screen bg-cream p-8">
-      <h1 className="text-lg font-bold text-berry mb-6">Product Details</h1>
+    <main className="min-h-screen bg-cream">
+      <div className="mx-auto w-full max-w-4xl px-4 py-8">
+        {isLoading ? (
+          <p>Loading product...</p>
+        ) : error ? (
+          <p>Could not load product: {error}</p>
+        ) : product ? (
+          <section>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              <img
+                src={product.image.url}
+                alt={product.image.alt}
+                className="w-full max-w-md rounded-lg mb-4"
+              />
+              <div>
+                <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <h1 className=" text-2xl font-bold text-berry">
+                    {product.title}
+                  </h1>
 
-      {isLoading ? (
-        <p>Loading product...</p>
-      ) : error ? (
-        <p>Could not load product: {error}</p>
-      ) : product ? (
-        <section>
-          <img
-            src={product.image.url}
-            alt={product.image.alt}
-            className="w-full max-w-md rounded-lg mb-4"
-          />
-
-          <div className="flex flex-row items-center justify-between">
-            <h2 className=" text-2xl font-bold text-berry">{product.title}</h2>
-
-            <p className="text-amber text-sm">⭐{product.rating} / 5</p>
-          </div>
-
-          <p className="text-base font-medium text-dark mb-4">
-            {product.description}
-          </p>
-
-          <div className="flex items-center gap-3 mb-4">
-            <p className="text-xl font-medium">
-              £{product.discountedPrice.toFixed(2)}
-            </p>
-
-            {product.price > product.discountedPrice && (
-              <p className="text-sm text-gray-500 line-through">
-                £{product.price.toFixed(2)}
-              </p>
-            )}
-          </div>
-
-          <AddToCartButton product={product} />
-
-          <p className="text-sm font-light text-caramel mb-4">
-            {product.tags.join(", ")}
-          </p>
-
-          <div className="border-2 border-caramel rounded-lg p-3 mb-4">
-            <h3 className="text-xl font-bold text-berry mb-2">Reviews</h3>
-
-            {product.reviews.length > 0 ? (
-              product.reviews.map((review) => (
-                <div key={review.id}>
-                  <p className="text-base font-medium text-dark">
-                    {review.username}
-                  </p>
-                  <p>⭐{review.rating} / 5</p>
-
-                  <p className="text-base text-dark">{review.description}</p>
+                  <p className="text-amber text-sm">⭐{product.rating} / 5</p>
                 </div>
-              ))
-            ) : (
-              <p>No reviews yet.</p>
-            )}
-          </div>
-        </section>
-      ) : (
-        <p>Product not found.</p>
-      )}
-      <Link to="/" className="text-berry hover:underline">
-        ← Back to Shop
-      </Link>
+
+                <p className="text-base font-medium text-dark mb-6">
+                  {product.description}
+                </p>
+
+                <div className="flex items-center gap-3 mb-4">
+                  <p className="text-xl font-medium">
+                    £{product.discountedPrice.toFixed(2)}
+                  </p>
+
+                  {product.price > product.discountedPrice && (
+                    <p className="text-sm text-gray-500 line-through">
+                      £{product.price.toFixed(2)}
+                    </p>
+                  )}
+                </div>
+
+                <AddToCartButton product={product} />
+
+                <p className="text-sm font-light text-caramel mb-4">
+                  {product.tags.join(", ")}
+                </p>
+              </div>
+            </div>
+
+            <div className="border-2 border-caramel rounded-lg p-3 mb-4">
+              <h3 className="text-xl font-bold text-berry mb-2">Reviews</h3>
+
+              {product.reviews.length > 0 ? (
+                product.reviews.map((review) => (
+                  <div key={review.id}>
+                    <p className="text-base font-medium text-dark">
+                      {review.username}
+                    </p>
+                    <p>⭐{review.rating} / 5</p>
+
+                    <p className="text-base text-dark">{review.description}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No reviews yet.</p>
+              )}
+            </div>
+          </section>
+        ) : (
+          <p>Product not found.</p>
+        )}
+        <Link to="/" className="text-berry hover:underline">
+          ← Back to Shop
+        </Link>
+      </div>
     </main>
   );
 }
